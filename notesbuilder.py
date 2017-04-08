@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
-import json
 import scrapy
+import urllib.parse
 
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 class NotesSpider(scrapy.Spider):
     name = 'Notes'
@@ -10,11 +11,17 @@ class NotesSpider(scrapy.Spider):
     ]
     data = []
 
+    def __init__(self):
+        self.env = Environment(
+            loader=FileSystemLoader('templates'),
+            autoescape=select_autoescape(['html', 'md'])
+        )
+
     def parse(self, response):
         for post in response.css('#main-content h1'):
             json = {
                 'text': post.css('a::text').extract_first(),
-                'url': post.css('a::attr("href")').extract_first()
+                'url': urllib.parse.urljoin(self.start_urls[0], post.css('a::attr("href")').extract_first())
             }
             # yield json
             self.data.append(json)
@@ -25,6 +32,8 @@ class NotesSpider(scrapy.Spider):
             yield scrapy.Request(next_url, callback=self.parse)
 
     def close(self, reason):
-        filename = getattr(self, 'filename', 'data.json')
+        readme_tempalte = self.env.get_template('README.md')
+        readme = readme_tempalte.render(notes=self.data)
+        filename = getattr(self, 'filename', 'READEME.md')
         with open(filename, 'w') as file:
-            json.dump(self.data, file, ensure_ascii=False)
+            file.write(readme)
