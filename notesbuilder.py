@@ -34,15 +34,30 @@ class NotesSpider(scrapy.Spider):
             yield scrapy.Request(next_url, callback=self.parse)
 
     def close(self, reason):
-        readme_tempalte = self.env.get_template('README.md')
-        readme = readme_tempalte.render(notes=self.data)
-        readme_name = getattr(self, 'readme', 'READEME.md')
-        with open(readme_name, 'w') as file:
-            file.write(readme)
+        self.generate_readme()
+        self.generate_index()
 
-        index_template = self.env.get_template('index.html')
-        index = index_template.render(notes=self.data)
-        index_name = getattr(self, 'index', 'index.html')
-        index_path = path.join('docs', index_name)
-        with open(index_path, 'w') as file:
-            file.write(index)
+    def generate_readme(self):
+        try:
+            readme_tempalte = self.env.get_template('README.md')
+            readme = readme_tempalte.render(notes=self.data)
+            readme_name = getattr(self, 'readme', 'READEME.md')
+            with open(readme_name, 'w') as file:
+                file.write(readme)
+                print('generate README.md successfully')
+        except Exception as ex:
+            print('generate README.md error: ', ex)
+
+    def generate_index(self):
+        try:
+            index_template = self.env.get_template('index.html')
+            index = index_template.render(notes=self.data)
+            index_name = getattr(self, 'index', 'index.html')
+            index_path = path.join('docs', index_name)
+            with open(index_path, 'w') as file:
+                file.write(index)
+                print('generate index.html successfully')
+        except Exception as ex:
+            print('generate index.html error: ', ex)
+
+
