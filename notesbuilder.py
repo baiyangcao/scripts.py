@@ -9,11 +9,13 @@ from urllib.parse import urljoin
 class NotesSpider(scrapy.Spider):
     name = 'Notes'
     start_urls = [
-        'https://baiyangcao.github.io/'
+        # 'https://baiyangcao.github.io/'
+        'http://localhost:4000/'
     ]
     data = []
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.env = Environment(
             loader=FileSystemLoader('templates'),
             autoescape=select_autoescape(['html', 'md'])
