@@ -9,8 +9,8 @@ from urllib.parse import urljoin
 class NotesSpider(scrapy.Spider):
     name = 'Notes'
     start_urls = [
-        # 'https://baiyangcao.github.io/'
-        'http://localhost:4000/'
+        'https://baiyangcao.github.io/'
+        # 'http://localhost:4000/'
     ]
     data = []
 
@@ -42,9 +42,9 @@ class NotesSpider(scrapy.Spider):
     def generate_readme(self):
         try:
             readme_tempalte = self.env.get_template('README.md')
-            readme = readme_tempalte.render(notes=self.data)
+            readme = readme_tempalte.render(notes=self.data).encode('utf-8')
             readme_name = getattr(self, 'readme', 'READEME.md')
-            with open(readme_name, 'w') as file:
+            with open(readme_name, 'wb') as file:
                 file.write(readme)
                 print('generate README.md successfully')
         except Exception as ex:
@@ -53,10 +53,10 @@ class NotesSpider(scrapy.Spider):
     def generate_index(self):
         try:
             index_template = self.env.get_template('index.html')
-            index = index_template.render(notes=self.data)
+            index = index_template.render(notes=self.data).encode('utf-8')
             index_name = getattr(self, 'index', 'index.html')
             index_path = path.join('docs', index_name)
-            with open(index_path, 'w') as file:
+            with open(index_path, 'wb') as file:
                 file.write(index)
                 print('generate index.html successfully')
         except Exception as ex:
