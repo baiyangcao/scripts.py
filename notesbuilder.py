@@ -43,7 +43,7 @@ class NotesSpider(scrapy.Spider):
         try:
             readme_tempalte = self.env.get_template('README.md')
             readme = readme_tempalte.render(notes=self.data).encode('utf-8')
-            readme_name = getattr(self, 'readme', 'READEME.md')
+            readme_name = getattr(self, 'readme', 'README.md')
             with open(readme_name, 'wb') as file:
                 file.write(readme)
                 print('generate README.md successfully')
