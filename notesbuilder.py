@@ -84,8 +84,7 @@ class NotesSpider(scrapy.Spider):
         index = repo.index
 
         # commit
-        index.add(self.readme_path)
-        index.add(self.index_path)
+        index.add([self.readme_path, self.index_path])
         index.commit('update readme.md and index.html automatically')
 
         # push
