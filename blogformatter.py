@@ -17,12 +17,12 @@ def formatline(line, type):
     md_end_regexp = r"^\s*```\s*$"
     rouge_end_regexp = r"{% endhighlight %}\n"
 
-    if type.lower() == "markdown":
+    if type.lower() == "rouge":
         start_regexp = md_start_regexp
         start_replace = rouge_start_regexp
         end_regexp = md_end_regexp
         end_replace = rouge_start_regexp
-    elif type.lower() == "rouge":
+    elif type.lower() == "markdown":
         start_regexp = rouge_start_regexp
         start_replace = md_start_regexp
         end_regexp = rouge_end_regexp
