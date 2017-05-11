@@ -21,7 +21,7 @@ def formatline(line, type):
         start_regexp = md_start_regexp
         start_replace = rouge_start_regexp
         end_regexp = md_end_regexp
-        end_replace = rouge_start_regexp
+        end_replace = rouge_end_regexp
     elif type.lower() == "markdown":
         start_regexp = rouge_start_regexp
         start_replace = md_start_regexp
