@@ -12,21 +12,17 @@ def formatline(line, type):
     :param type: target format type, available value: markdown, rouge 
     :return: formatted line string
     """
-    md_start_regexp = r"^\s*```(.+)\s*$"
-    rouge_start_regexp = r"{% highlight \1 %}\n"
-    md_end_regexp = r"^\s*```\s*$"
-    rouge_end_regexp = r"{% endhighlight %}\n"
 
     if type.lower() == "rouge":
-        start_regexp = md_start_regexp
-        start_replace = rouge_start_regexp
-        end_regexp = md_end_regexp
-        end_replace = rouge_end_regexp
+        start_regexp = r"^\s*```(.+)\s*$"
+        start_replace = r"{% highlight \1 %}\n"
+        end_regexp = r"^\s*```\s*$"
+        end_replace = r"{% endhighlight %}\n"
     elif type.lower() == "markdown":
-        start_regexp = rouge_start_regexp
-        start_replace = md_start_regexp
-        end_regexp = rouge_end_regexp
-        end_replace = md_end_regexp
+        start_regexp = r"{%\s+highlight\s+(.+)\s+%}"
+        start_replace = r"```\1\n"
+        end_regexp = r"{%\s+endhighlight\s+%}"
+        end_replace = r"```"
 
     if re.fullmatch(start_regexp, line) is not None:
         return re.sub(start_regexp, start_replace, line)
