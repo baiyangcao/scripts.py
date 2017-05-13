@@ -42,5 +42,16 @@ class BlogFormatterTest(TestCase):
         result = '```javascript'
         self.assertEqual(result, formatline(source, 'markdown').strip('\n'))
 
+    def test_formateline_end_md(self):
+        '''
+        formateline function test
+        target markdown syntax
+        code range start
+        :return: 
+        '''
+        source = '{% endhighlight %}'
+        result = '```'
+        self.assertEqual(result, formatline(source, 'markdown').strip('\n'))
+
 if __name__ == '__main__':
     main()
