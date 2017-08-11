@@ -37,7 +37,7 @@ class CnBlogPublisher(BlogPublisher):
     """
 
     def __init__(self):
-        super("baiyangcao", "y2211612", "http://rpc.cnblogs.com/metaweblog/baiyangcao")
+        super().__init__("baiyangcao", "y2211612", "http://rpc.cnblogs.com/metaweblog/baiyangcao")
         self.appKey = "baiyangcao"
         self.server = xmlrpc.client.ServerProxy(self.url)
         info = self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)
@@ -53,7 +53,7 @@ class CnBlogPublisher(BlogPublisher):
             "title": title,
             "description": content
         }
-        self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, False)
+        self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
 
 
 
