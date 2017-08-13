@@ -30,6 +30,14 @@ class BlogPublisher:
         """
         pass
 
+    def delete(self,  postid):
+        """
+        delete blog by postid
+        :param postid:
+        :return:
+        """
+        pass
+
 
 class CnBlogPublisher(BlogPublisher):
     """
@@ -54,6 +62,9 @@ class CnBlogPublisher(BlogPublisher):
             "description": content
         }
         self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
+
+    def delete(self,  postid):
+        self.server.blogger.deletePost(self.appKey, postid, self.username, self.password, True)
 
 
 
