@@ -6,6 +6,7 @@ publish blog to blog site, cnblog or oschina
 
 import xmlrpc.client
 
+
 class BlogPublisher:
     """
     base class for blog publish
@@ -30,7 +31,7 @@ class BlogPublisher:
         """
         pass
 
-    def delete(self,  postid):
+    def delete(self, postid):
         """
         delete blog by postid
         :param postid:
@@ -63,9 +64,8 @@ class CnBlogPublisher(BlogPublisher):
         }
         self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
 
-    def delete(self,  postid):
+    def delete(self, postid):
         self.server.blogger.deletePost(self.appKey, postid, self.username, self.password, True)
-
 
 
 class OsChinaPublisher(BlogPublisher):
@@ -74,7 +74,11 @@ class OsChinaPublisher(BlogPublisher):
     """
 
     def __init__(self):
-        super.__init__()
+        super.__init__("497462386@qq.com", "y2211612", "https://myoschina.net/action/xmlrpc")
+        self.appKey = "baiyangcao"
+        self.server = xmlrpc.client.ServerProxy(self.url)
+        info = self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)
+        self.blogid = info[0]["blogid"]
 
     def publish(self, title, content):
         """
@@ -82,4 +86,8 @@ class OsChinaPublisher(BlogPublisher):
         :param content: blog content to publish (markdown syntax)
         :return: 
         """
-        pass
+        post = {
+            "title": title,
+            "description": content
+        }
+        self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
