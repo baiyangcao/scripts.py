@@ -74,9 +74,11 @@ class OsChinaPublisher(BlogPublisher):
     """
 
     def __init__(self):
-        super.__init__("497462386@qq.com", "y2211612", "https://myoschina.net/action/xmlrpc")
+        super.__init__("497462386@qq.com", "y2211612", "https://my.oschina.net/action/xmlrpc")
         self.appKey = "baiyangcao"
-        self.server = xmlrpc.client.ServerProxy(self.url)
+        transport = xmlrpc.client.SafeTransport()
+        transport.user_agent = "Fiddler"
+        self.server = xmlrpc.client.ServerProxy(self.url, transport=transport)
         info = self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)
         self.blogid = info[0]["blogid"]
 
