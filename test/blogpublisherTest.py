@@ -3,7 +3,7 @@
 import sys
 import xmlrpc
 from unittest import TestCase
-from blogpublisher import CnBlogPublisher;
+from blogpublisher import CnBlogPublisher, OsChinaPublisher;
 
 sys.path.append('..')
 
@@ -26,3 +26,7 @@ class BlogPublisherTest(TestCase):
         transport.user_agent = "Fiddler"
         server = xmlrpc.client.ServerProxy(url, transport=transport)
         print(server.blogger.getUsersBlogs(appKey, username, password))
+
+    def test_oschina_publish(self):
+        oschina = OsChinaPublisher()
+        oschina.publish("test", "<h1>this is a test</h1>")
