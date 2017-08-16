@@ -74,7 +74,7 @@ class OsChinaPublisher(BlogPublisher):
     """
 
     def __init__(self):
-        super.__init__("497462386@qq.com", "y2211612", "https://my.oschina.net/action/xmlrpc")
+        super().__init__("497462386@qq.com", "y2211612", "https://my.oschina.net/action/xmlrpc")
         self.appKey = "baiyangcao"
         transport = xmlrpc.client.SafeTransport()
         transport.user_agent = "Fiddler"
