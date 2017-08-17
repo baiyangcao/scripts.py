@@ -22,6 +22,23 @@ class BlogPublisher:
         self.username = username
         self.password = password
         self.url = url
+        self.appKey = "baiyangcao"
+        self.server = self.__get_server()
+        self.blogid = self.__get_blogid()
+
+    def __get_server(self):
+        """
+        create the ServerProxy Object
+        :return:
+        """
+        return xmlrpc.client.ServerProxy(self.url)
+
+    def __get_blogid(self):
+        """
+        get the blogid by XML-RPC API blogger.getUsersBlogs
+        :return:
+        """
+        return self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)[0]["blogid"]
 
     def publish(self, title, content):
         """
@@ -29,7 +46,11 @@ class BlogPublisher:
         :param content: blog content to publish (markdown syntax)
         :return: 
         """
-        pass
+        post = {
+            "title": title,
+            "description": content
+        }
+        self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
 
     def delete(self, postid):
         """
@@ -37,7 +58,7 @@ class BlogPublisher:
         :param postid:
         :return:
         """
-        pass
+        self.server.blogger.deletePost(self.appKey, postid, self.username, self.password, True)
 
 
 class CnBlogPublisher(BlogPublisher):
