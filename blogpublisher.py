@@ -68,25 +68,6 @@ class CnBlogPublisher(BlogPublisher):
 
     def __init__(self):
         super().__init__("baiyangcao", "y2211612", "http://rpc.cnblogs.com/metaweblog/baiyangcao")
-        self.appKey = "baiyangcao"
-        self.server = xmlrpc.client.ServerProxy(self.url)
-        info = self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)
-        self.blogid = info[0]["blogid"]
-
-    def publish(self, title, content):
-        """
-        publish blog to 
-        :param content: blog content to publish (markdown syntax)
-        :return: 
-        """
-        post = {
-            "title": title,
-            "description": content
-        }
-        self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
-
-    def delete(self, postid):
-        self.server.blogger.deletePost(self.appKey, postid, self.username, self.password, True)
 
 
 class OsChinaPublisher(BlogPublisher):
