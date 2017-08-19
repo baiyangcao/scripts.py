@@ -67,7 +67,7 @@ class CnBlogPublisher(BlogPublisher):
     """
 
     def __init__(self):
-        super().__init__("baiyangcao", "y2211612", "http://rpc.cnblogs.com/metaweblog/baiyangcao")
+        super(CnBlogPublisher, self).__init__("baiyangcao", "y2211612", "http://rpc.cnblogs.com/metaweblog/baiyangcao")
 
 
 class OsChinaPublisher(BlogPublisher):
