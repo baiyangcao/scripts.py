@@ -76,22 +76,13 @@ class OsChinaPublisher(BlogPublisher):
     """
 
     def __init__(self):
-        super().__init__("497462386@qq.com", "y2211612", "https://my.oschina.net/action/xmlrpc")
-        self.appKey = "baiyangcao"
+        super(OsChinaPublisher, self).__init__("497462386@qq.com", "y2211612", "https://my.oschina.net/action/xmlrpc")
+
+    def get_server(self):
+        """
+        create ServerProxy and set the user_agent
+        :return:
+        """
         transport = xmlrpc.client.SafeTransport()
         transport.user_agent = "Fiddler"
-        self.server = xmlrpc.client.ServerProxy(self.url, transport=transport)
-        info = self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)
-        self.blogid = info[0]["blogid"]
-
-    def publish(self, title, content):
-        """
-        publish blog to 
-        :param content: blog content to publish (markdown syntax)
-        :return: 
-        """
-        post = {
-            "title": title,
-            "description": content
-        }
-        self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
+        return xmlrpc.client.ServerProxy(self.url, transport=transport)
