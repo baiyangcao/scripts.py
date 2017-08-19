@@ -23,10 +23,10 @@ class BlogPublisher:
         self.password = password
         self.url = url
         self.appKey = "baiyangcao"
-        self.server = self.__get_server()
+        self.server = self.get_server()
         self.blogid = self.__get_blogid()
 
-    def __get_server(self):
+    def get_server(self):
         """
         create the ServerProxy Object
         :return:
