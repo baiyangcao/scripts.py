@@ -23,10 +23,10 @@ class BlogPublisher:
         self.password = password
         self.url = url
         self.appKey = "baiyangcao"
-        self.server = self.get_server()
+        self.server = self._get_server()
         self.blogid = self.__get_blogid()
 
-    def get_server(self):
+    def _get_server(self):
         """
         create the ServerProxy Object
         :return:
@@ -78,7 +78,7 @@ class OsChinaPublisher(BlogPublisher):
     def __init__(self):
         super(OsChinaPublisher, self).__init__("497462386@qq.com", "y2211612", "https://my.oschina.net/action/xmlrpc")
 
-    def get_server(self):
+    def _get_server(self):
         """
         create ServerProxy and set the user_agent
         :return:
