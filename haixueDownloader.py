@@ -5,6 +5,9 @@ import requests
 class HaiXue():
     def __init__(self):
         self.cookies = None
+        self.goods_id = '1066185'
+        self.catalog_id = '16'
+        self.catalogs = None
 
     def __login(self):
         resp = requests.post('http://highso.cn/doLogin.do',
@@ -12,3 +15,11 @@ class HaiXue():
                                        _spring_security_remember_me='off'))
         # print(resp.text)
         self.cookies = resp.cookies
+
+    def __get_goods(self):
+        resp = requests.post('http://highso.cn/course/white/getGoodsWithRecord.do',
+                             data={'categoryId': self.catalog_id},
+                             cookies=self.cookies)
+        json = resp.json()
+        self.catalogs = json['result'][0]['firstCatalog']
+
