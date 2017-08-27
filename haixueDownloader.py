@@ -8,6 +8,8 @@ class HaiXue():
         self.goods_id = '1066185'
         self.catalog_id = '16'
         self.catalogs = None
+        self.__login()
+        self.__get_goods()
 
     def __login(self):
         resp = requests.post('http://highso.cn/doLogin.do',
@@ -23,3 +25,7 @@ class HaiXue():
         json = resp.json()
         self.catalogs = json['result'][0]['firstCatalog']
 
+
+if __name__ == '__main__':
+    haixue = HaiXue()
+    print(haixue.catalogs)
