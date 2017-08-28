@@ -25,6 +25,15 @@ class HaiXue():
         json = resp.json()
         self.catalogs = json['result'][0]['firstCatalog']
 
+    def __get_catalog(self, catalog_id):
+        resp = requests.post('http://highso.cn/course/white/getCatalog.do',
+                             data={
+                                 'goodsCatalogId': catalog_id,
+                                 'goodsId': self.goods_id
+                             },
+                             cookies=self.cookies)
+        return resp.json()['result']
+
 
 if __name__ == '__main__':
     haixue = HaiXue()
