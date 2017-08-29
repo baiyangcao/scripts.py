@@ -34,6 +34,15 @@ class HaiXue():
                              cookies=self.cookies)
         return resp.json()['result']
 
+    def __get_videos(self, module_id):
+        resp = requests.post('http://highso./course/module/findGoodsModuleVideo.do',
+                             data={
+                                 'catalogId': module_id,
+                                 'goodsId': self.goods_id
+                             },
+                             cookies=self.cookies)
+        return resp.json()['videos']
+
 
 if __name__ == '__main__':
     haixue = HaiXue()
