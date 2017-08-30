@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import os
 import requests
 
 
@@ -8,6 +9,7 @@ class HaiXue():
         self.goods_id = '1066185'
         self.catalog_id = '16'
         self.catalogs = None
+        self.path = r'C:\Users\Administrator\Downloads\Video\二级建造师'
         self.__login()
         self.__get_goods()
 
@@ -42,6 +44,15 @@ class HaiXue():
                              },
                              cookies=self.cookies)
         return resp.json()['videos']
+
+    def __download_videos(self, id, path, name, type='Video', format='.mp4'):
+        url = 'http://highso.cn/goods/downloadUrl.do?itemId=%s&type=%s&isCatalog=No&goodsId=%s' % (
+            id, type, self.goods_id)
+        resp = requests.get(url, cookies=self.cookies, allow_redirects=False)
+        self.__check_path(path)
+        filepath = os.path.join(path, name + format)
+        print('开始下载：', filepath)
+        # download
 
 
 if __name__ == '__main__':
