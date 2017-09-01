@@ -127,7 +127,27 @@ class HaiXue():
         if not os.path.exists(path):
             os.makedirs(path)
 
+    def start(self):
+        for catalog in self.catalogs:
+            catalog_path = os.path.join(self.path, catalog['subjectName'])
+            # 获取课程列表，以年为单位
+            lessons = self.__get_catalog(catalog['id'])
+            for year, modules in lessons.items():
+                if year == '2017':
+                    year_path = os.path.join(catalog_path, year)
+                    # 过滤直播课程
+                    modules = [module for module in modules if module['goodsModule']['type'] == 0]
+                    # 处理每年的模块列表
+                    for module in modules:
+                        module_path = os.path.join(year_path, module['goodsCatalogName'])
+                        # 获取模块下的视频
+                        videos = self.__get_videos(module['id'])
+                        # 下载视频
+                        for video in videos:
+                            self.__download_videos(video['id'], module_path, video['name'])
+
 
 if __name__ == '__main__':
     haixue = HaiXue()
-    print(haixue.catalogs)
+    # print(haixue.catalogs)
+    haixue.start()
