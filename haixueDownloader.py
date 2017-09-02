@@ -17,6 +17,10 @@ class HaiXue():
         self.__get_goods()
 
     def __login(self):
+        '''
+        登录并获取对应的 cookie 用于接下来的访问
+        :return:
+        '''
         resp = requests.post('http://highso.cn/doLogin.do',
                              data=dict(j_username=18396517057, j_password='yf920624',
                                        _spring_security_remember_me='off'))
@@ -24,6 +28,10 @@ class HaiXue():
         self.cookies = resp.cookies
 
     def __get_goods(self):
+        '''
+        获取一级目录，科目的列表
+        :return:
+        '''
         resp = requests.post('http://highso.cn/course/white/getGoodsWithRecord.do',
                              data={'categoryId': self.catalog_id},
                              cookies=self.cookies)
@@ -31,6 +39,11 @@ class HaiXue():
         self.catalogs = json['result'][0]['firstCatalog']
 
     def __get_catalog(self, catalog_id):
+        '''
+        获取二级目录，科目的模块列表
+        :param catalog_id:
+        :return:
+        '''
         resp = requests.post('http://highso.cn/course/white/getCatalog.do',
                              data={
                                  'goodsCatalogId': catalog_id,
@@ -40,6 +53,11 @@ class HaiXue():
         return resp.json()['result']
 
     def __get_videos(self, module_id):
+        '''
+        获取模块下的视频列表
+        :param module_id: 模块 id
+        :return:
+        '''
         resp = requests.post('http://highso./course/module/findGoodsModuleVideo.do',
                              data={
                                  'catalogId': module_id,
@@ -49,6 +67,15 @@ class HaiXue():
         return resp.json()['videos']
 
     def __download_videos(self, id, path, name, type='Video', format='.mp4'):
+        '''
+        下载视频到指定位置
+        :param id: 视频 id
+        :param path: 下载本地路径
+        :param name: 下载视频名称
+        :param type: 下载视频类型 Video/Audio
+        :param format: 下载视频文件格式 .mp4/.mp3
+        :return:
+        '''
         url = 'http://highso.cn/goods/downloadUrl.do?itemId=%s&type=%s&isCatalog=No&goodsId=%s' % (
             id, type, self.goods_id)
         resp = requests.get(url, cookies=self.cookies, allow_redirects=False)
@@ -128,6 +155,10 @@ class HaiXue():
             os.makedirs(path)
 
     def start(self):
+        '''
+        开始下载视频
+        :return:
+        '''
         for catalog in self.catalogs:
             catalog_path = os.path.join(self.path, catalog['subjectName'])
             # 获取课程列表，以年为单位
