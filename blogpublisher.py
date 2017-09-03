@@ -5,6 +5,9 @@ publish blog to blog site, cnblog or oschina
 """
 
 import xmlrpc.client
+from optparse import OptionParser
+
+import os
 
 
 class BlogPublisher:
@@ -86,3 +89,29 @@ class OsChinaPublisher(BlogPublisher):
         transport = xmlrpc.client.SafeTransport()
         transport.user_agent = "Fiddler"
         return xmlrpc.client.ServerProxy(self.url, transport=transport)
+
+
+def main():
+    parser = OptionParser("usage: %prog [options] arg")
+    parser.add_option("-f", "--file", dest="filename",
+                      help="the blog file want to be publish")
+    parser.add_option("-t", "--type", dest="type",
+                      type="choice", default="cnblog",
+                      choices=("cnblog", "oschina"),
+                      help="target blog website, available values: cnblog, oschina")
+    (options, args) = parser.parse_args()
+    if len(args) < 0 or not options.filename:
+        print("Please input the blog file want to be published")
+
+    if os.path.exists(options.filename):
+        content = ''
+        with open(options.filename, 'r', encoding='utf-8') as f:
+            for line in iter(f.readline, ''):
+                content = content + '\r\n' + line
+
+    else:
+        print("Input file not exists!")
+
+
+if __name__ == '__main__':
+    main()
