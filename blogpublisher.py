@@ -109,6 +109,17 @@ def main():
             for line in iter(f.readline, ''):
                 content = content + '\r\n' + line
 
+        if content != '':
+            title = options.filename[:options.filename.find('.')]
+            publisher = None
+            if options.type == 'cnblog':
+                publisher = CnBlogPublisher()
+            elif options.type == 'oschina':
+                publisher = OsChinaPublisher()
+            else:
+                pass
+            publisher.publish(title, content)
+
     else:
         print("Input file not exists!")
 
