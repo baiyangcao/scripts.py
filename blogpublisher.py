@@ -104,13 +104,23 @@ def main():
         print("Please input the blog file want to be published")
 
     if os.path.exists(options.filename):
+        title = ''
         content = ''
+        sperator_count = 0
         with open(options.filename, 'r', encoding='utf-8') as f:
             for line in iter(f.readline, ''):
+                # deal with the meta data
+                if sperator_count < 2:
+                    if line.strip() == '---':
+                        sperator_count = sperator_count + 1
+                    key, value = line.split(',')
+                    if key == 'title':
+                        title = value
+
                 content = content + '\r\n' + line
 
         if content != '':
-            title = options.filename[:options.filename.find('.')]
+            # title = options.filename[:options.filename.find('.')]
             publisher = None
             if options.type == 'cnblog':
                 publisher = CnBlogPublisher()
