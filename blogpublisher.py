@@ -113,14 +113,14 @@ def main():
                 if sperator_count < 2:
                     if line.strip() == '---':
                         sperator_count = sperator_count + 1
-                    key, value = line.split(',')
-                    if key == 'title':
-                        title = value
-
-                content = content + '\r\n' + line
+                    else:
+                        key, value = line.split(':')
+                        if key == 'title':
+                            title = value
+                else:
+                    content = content + '\r\n' + line
 
         if content != '':
-            # title = options.filename[:options.filename.find('.')]
             publisher = None
             if options.type == 'cnblog':
                 publisher = CnBlogPublisher()
