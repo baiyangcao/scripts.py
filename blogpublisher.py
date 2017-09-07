@@ -6,6 +6,7 @@ publish blog to blog site, cnblog or oschina
 
 import xmlrpc.client
 from optparse import OptionParser
+from markdown2 import Markdown
 
 import os
 
@@ -128,6 +129,8 @@ def main():
                 publisher = OsChinaPublisher()
             else:
                 pass
+            markdown = Markdown()
+            content = markdown.convert(content)
             publisher.publish(title, content)
 
     else:
