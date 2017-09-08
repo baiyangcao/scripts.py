@@ -6,6 +6,8 @@ publish blog to blog site, cnblog or oschina
 
 import xmlrpc.client
 from optparse import OptionParser
+
+import requests
 from markdown2 import Markdown
 
 import os
@@ -129,9 +131,10 @@ def main():
                 publisher = OsChinaPublisher()
             else:
                 pass
-            markdown = Markdown()
-            content = markdown.convert(content)
-            publisher.publish(title, content)
+            # convert markdown to html by github api
+            api_url = 'https://api.github.com/markdown/raw'
+            html = requests.post(api_url, content)
+            publisher.publish(title, html)
 
     else:
         print("Input file not exists!")
