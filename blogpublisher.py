@@ -133,7 +133,13 @@ def main():
                 pass
             # convert markdown to html by github api
             api_url = 'https://api.github.com/markdown/raw'
-            html = requests.post(api_url, content)
+            data = content.encode()
+            headers = {
+                'Content-Type': 'text/plain',
+                'Content-Length': str(len(data))
+            }
+            resp = requests.post(api_url, data=data, headers=headers)
+            html = resp.text
             publisher.publish(title, html)
 
     else:
