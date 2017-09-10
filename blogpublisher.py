@@ -5,6 +5,7 @@ publish blog to blog site, cnblog or oschina
 """
 
 import xmlrpc.client
+from datetime import datetime
 from optparse import OptionParser
 
 import requests
@@ -46,16 +47,16 @@ class BlogPublisher:
         """
         return self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)[0]["blogid"]
 
-    def publish(self, title, content):
+    def publish(self, title, content, date=None):
         """
         publish blog to 
+        :param date: blog publish date, default None
         :param content: blog content to publish (markdown syntax)
         :return: 
         """
-        post = {
-            "title": title,
-            "description": content
-        }
+        post = {"title": title, "description": content}
+        if date is not None:
+            post["dateCreated"] = date
         self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
 
     def delete(self, postid):
