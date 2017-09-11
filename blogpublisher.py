@@ -109,6 +109,7 @@ def main():
 
     if os.path.exists(options.filename):
         title = ''
+        date = ''
         content = ''
         sperator_count = 0
         with open(options.filename, 'r', encoding='utf-8') as f:
@@ -121,6 +122,8 @@ def main():
                         key, value = line.split(':')
                         if key == 'title':
                             title = value
+                        elif key == 'date':
+                            date = value
                 else:
                     content = content + '\r\n' + line
 
@@ -141,7 +144,7 @@ def main():
             }
             resp = requests.post(api_url, data=data, headers=headers)
             html = resp.text
-            publisher.publish(title, html)
+            publisher.publish(title, html, date)
 
     else:
         print("Input file not exists!")
