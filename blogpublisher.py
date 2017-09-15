@@ -5,6 +5,7 @@ publish blog to blog site, cnblog or oschina
 """
 
 import xmlrpc.client
+
 from datetime import datetime
 from optparse import OptionParser
 
@@ -56,7 +57,7 @@ class BlogPublisher:
         """
         post = {"title": title, "description": content}
         if date is not None:
-            post["dateCreated"] = date
+            post["dateCreated"] = datetime.strptime(date.strip(), '%Y-%m-%d')
         self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
 
     def delete(self, postid):
