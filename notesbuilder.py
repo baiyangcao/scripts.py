@@ -25,6 +25,10 @@ class NotesSpider(scrapy.Spider):
             autoescape=select_autoescape(['html', 'md'])
         )
 
+        # read the arguments
+        if self.repo is not None:
+            self.repo_path = self.repo
+
     def parse(self, response):
         for post in response.css('#main-content h1'):
             json = {
