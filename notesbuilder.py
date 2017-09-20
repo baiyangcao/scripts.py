@@ -88,8 +88,10 @@ class NotesSpider(scrapy.Spider):
         index = repo.index
 
         # commit
-        index.add([self.readme_path, self.index_path])
-        index.commit('update readme.md and index.html automatically')
+        index.add([self.readme_path])
+        index.commit('update readme.md automatically')
+        index.add([self.index_path])
+        index.commit('update index.html automatically')
 
         # push
         remote = repo.remote('github')
