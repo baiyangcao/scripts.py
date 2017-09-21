@@ -10,7 +10,6 @@ from datetime import datetime
 from optparse import OptionParser
 
 import requests
-from markdown2 import Markdown
 
 import os
 
@@ -109,46 +108,55 @@ def main():
         print("Please input the blog file want to be published")
 
     if os.path.exists(options.filename):
-        title = ''
-        date = ''
-        content = ''
-        sperator_count = 0
-        with open(options.filename, 'r', encoding='utf-8') as f:
-            for line in iter(f.readline, ''):
-                # deal with the meta data
-                if sperator_count < 2:
-                    if line.strip() == '---':
-                        sperator_count = sperator_count + 1
-                    else:
-                        key, value = line.split(':')
-                        if key == 'title':
-                            title = value
-                        elif key == 'date':
-                            date = value
-                else:
-                    content = content + '\r\n' + line
-
-        if content != '':
-            publisher = None
-            if options.type == 'cnblog':
-                publisher = CnBlogPublisher()
-            elif options.type == 'oschina':
-                publisher = OsChinaPublisher()
-            else:
-                pass
-            # convert markdown to html by github api
-            api_url = 'https://api.github.com/markdown/raw'
-            data = content.encode()
-            headers = {
-                'Content-Type': 'text/plain',
-                'Content-Length': str(len(data))
-            }
-            resp = requests.post(api_url, data=data, headers=headers)
-            html = resp.text
-            publisher.publish(title, html, date)
-
+        publishblog(options.filename, options.type)
     else:
         print("Input file not exists!")
+
+
+def publishblog(filename, type):
+    '''
+    publish blog to blog website
+    :param filename: the blog file name
+    :param type: blog website type, cnblog/oschina
+    :return:
+    '''
+    title = ''
+    date = ''
+    content = ''
+    sperator_count = 0
+    with open(filename, 'r', encoding='utf-8') as f:
+        for line in iter(f.readline, ''):
+            # deal with the meta data
+            if sperator_count < 2:
+                if line.strip() == '---':
+                    sperator_count = sperator_count + 1
+                else:
+                    key, value = line.split(':')
+                    if key == 'title':
+                        title = value
+                    elif key == 'date':
+                        date = value
+            else:
+                content = content + '\r\n' + line
+
+    if content != '':
+        publisher = None
+        if type == 'cnblog':
+            publisher = CnBlogPublisher()
+        elif type == 'oschina':
+            publisher = OsChinaPublisher()
+        else:
+            pass
+        # convert markdown to html by github api
+        api_url = 'https://api.github.com/markdown/raw'
+        data = content.encode()
+        headers = {
+            'Content-Type': 'text/plain',
+            'Content-Length': str(len(data))
+        }
+        resp = requests.post(api_url, data=data, headers=headers)
+        html = resp.text
+        publisher.publish(title, html, date)
 
 
 if __name__ == '__main__':
