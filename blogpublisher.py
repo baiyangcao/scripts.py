@@ -113,12 +113,11 @@ def main():
         print("Input file not exists!")
 
 
-def publishblog(filename, type):
+def getmetadata(filename):
     '''
-    publish blog to blog website
-    :param filename: the blog file name
-    :param type: blog website type, cnblog/oschina
-    :return:
+    read the meta data and the content of blog
+    :param filename: the blog filename
+    :return: a tuple of (title, date, content)
     '''
     title = ''
     date = ''
@@ -139,6 +138,17 @@ def publishblog(filename, type):
             else:
                 content = content + '\r\n' + line
 
+    return title, date, content
+
+
+def publishblog(filename, type):
+    '''
+    publish blog to blog website
+    :param filename: the blog file name
+    :param type: blog website type, cnblog/oschina
+    :return:
+    '''
+    title, date, content = getmetadata(filename)
     if content != '':
         publisher = None
         if type == 'cnblog':
