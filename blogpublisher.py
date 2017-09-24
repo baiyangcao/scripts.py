@@ -140,6 +140,21 @@ def getmetadata(filename):
 
     return title, date, content
 
+def mdtohtml(raw):
+    '''
+    convert markdown content to html format by github api
+    :param raw: markdown content
+    :return: the html format content
+    '''
+    api_url = 'https://api.github.com/markdown/raw'
+    data = raw.encode()
+    headers = {
+        'Content-Type': 'text/plain',
+        'Content-Length': str(len(data))
+    }
+    resp = requests.post(api_url, data=data, headers=headers)
+    return resp.text
+
 
 def publishblog(filename, type):
     '''
@@ -158,14 +173,7 @@ def publishblog(filename, type):
         else:
             pass
         # convert markdown to html by github api
-        api_url = 'https://api.github.com/markdown/raw'
-        data = content.encode()
-        headers = {
-            'Content-Type': 'text/plain',
-            'Content-Length': str(len(data))
-        }
-        resp = requests.post(api_url, data=data, headers=headers)
-        html = resp.text
+        html = mdtohtml(content)
         publisher.publish(title, html, date)
 
 
