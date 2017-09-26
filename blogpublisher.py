@@ -47,16 +47,12 @@ class BlogPublisher:
         """
         return self.server.blogger.getUsersBlogs(self.appKey, self.username, self.password)[0]["blogid"]
 
-    def publish(self, title, content, date=None):
+    def publish(self, post):
         """
         publish blog to 
-        :param date: blog publish date, default None
-        :param content: blog content to publish (markdown syntax)
+        :param post: post data, content title, description, createdate
         :return: 
         """
-        post = {"title": title, "description": content}
-        if date is not None:
-            post["dateCreated"] = datetime.strptime(date.strip(), '%Y-%m-%d')
         self.server.metaWeblog.newPost(self.blogid, self.username, self.password, post, True)
 
     def delete(self, postid):
@@ -117,10 +113,13 @@ def getmetadata(filename):
     '''
     read the meta data and the content of blog
     :param filename: the blog filename
-    :return: a tuple of (title, date, content)
+    :return:
     '''
-    title = ''
-    date = ''
+    data = {}
+    fieldsmap = {
+        "title": "title",
+        "date": "dateCreated"
+    }
     content = ''
     sperator_count = 0
     with open(filename, 'r', encoding='utf-8') as f:
@@ -131,14 +130,16 @@ def getmetadata(filename):
                     sperator_count = sperator_count + 1
                 else:
                     key, value = line.split(':')
-                    if key == 'title':
-                        title = value
-                    elif key == 'date':
-                        date = value
+                    keys = fieldsmap.keys()
+                    if key in keys:
+                        if key == 'date':
+                            value = datetime.strptime(value.strip(), '%Y-%m-%d')
+                        data[fieldsmap[key]] = value
             else:
                 content = content + '\r\n' + line
 
-    return title, date, content
+    data["description"] = content
+    return data
 
 def mdtohtml(raw):
     '''
@@ -163,8 +164,8 @@ def publishblog(filename, type):
     :param type: blog website type, cnblog/oschina
     :return:
     '''
-    title, date, content = getmetadata(filename)
-    if content != '':
+    data = getmetadata(filename)
+    if data["description"] != '':
         publisher = None
         if type == 'cnblog':
             publisher = CnBlogPublisher()
@@ -173,8 +174,8 @@ def publishblog(filename, type):
         else:
             pass
         # convert markdown to html by github api
-        html = mdtohtml(content)
-        publisher.publish(title, html, date)
+        data["description"] = mdtohtml(data["description"])
+        publisher.publish(data)
 
 
 if __name__ == '__main__':
