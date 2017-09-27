@@ -118,7 +118,8 @@ def getmetadata(filename):
     data = {}
     fieldsmap = {
         "title": "title",
-        "date": "dateCreated"
+        "date": "dateCreated",
+        "excerpt": "mt_excerpt"
     }
     content = ''
     sperator_count = 0
