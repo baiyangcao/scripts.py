@@ -1,4 +1,5 @@
 import requests
+import webbrowser
 
 
 def get_folder(id):
@@ -41,7 +42,20 @@ def get_folder(id):
     return items
 
 
+def downloadfile(id):
+    '''
+    download the file
+    :param id: the file id
+    :param filepath: the local file path
+    :return:
+    '''
+    url = "https://drive.google.com/uc?id=%s&export=download" % id
+    webbrowser.open(url, new=0, autoraise=True)
+
+
 if __name__ == "__main__":
-    items = get_folder("0B2p1zXqO0zzpOTBldmxoUjhrQlk")
-    for item in items:
-        print(item["title"], item["id"])
+    # items = get_folder("0B2p1zXqO0zzpOTBldmxoUjhrQlk")
+    # for item in items:
+    #     print(item["title"], item["id"])
+    
+    downloadfile("0B6h7SF4LjjaUZ1VrYW5tbWd0RlE")
