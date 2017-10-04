@@ -46,7 +46,6 @@ def downloadfile(id):
     '''
     download the file
     :param id: the file id
-    :param filepath: the local file path
     :return:
     '''
     url = "https://drive.google.com/uc?id=%s&export=download" % id
