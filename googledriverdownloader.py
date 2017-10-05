@@ -16,7 +16,7 @@ def get_folder(id):
         "fields": "kind,nextPageToken,items(kind,title,mimeType,createdDate,modifiedDate,modifiedByMeDate,lastViewedByMeDate,fileSize,owners(kind,permissionId,displayName,picture,emailAddress,domain),lastModifyingUser(kind,permissionId,displayName,picture,emailAddress),hasThumbnail,thumbnailVersion,iconLink,id,shared,sharedWithMeDate,userPermission(role),explicitlyTrashed,quotaBytesUsed,shareable,copyable,subscribed,folderColor,hasChildFolders,fileExtension,primarySyncParentId,sharingUser(kind,permissionId,displayName,picture,emailAddress),flaggedForAbuse,folderFeatures,spaces,sourceAppId,editable,recency,recencyReason,version,actionItems,teamDriveId,hasAugmentedPermissions,primaryDomainName,organizationDisplayName,passivelySubscribed,trashingUser(kind,permissionId,displayName,picture,emailAddress),trashedDate,hasVisitorPermissions,parents(id),labels(starred,hidden,trashed,restricted,viewed),capabilities(canCopy,canDownload,canEdit,canAddChildren,canDelete,canRemoveChildren,canShare,canTrash,canRename,canReadTeamDrive,canMoveTeamDriveItem,canMoveItemIntoTeamDrive)),incompleteSearch",
         "includeTeamDriveItems": "true",
         "key": "AIzaSyAy9VVXHSpS2IJpptzYtGbLP3-3_l0aBk4",
-        "maxResults": "50",
+        "maxResults": "200",
         "openDrive": "false",
         "orderBy": "folder,modifiedDate desc",
         "q": "trashed = false and '%s' in parents" % id,
@@ -53,8 +53,8 @@ def downloadfile(id):
 
 
 if __name__ == "__main__":
-    # items = get_folder("0B2p1zXqO0zzpOTBldmxoUjhrQlk")
-    # for item in items:
-    #     print(item["title"], item["id"])
+    items = get_folder("0B2p1zXqO0zzpOTBldmxoUjhrQlk")
+    for item in items:
+        print(item["title"], item["id"])
     
-    downloadfile("0B6h7SF4LjjaUZ1VrYW5tbWd0RlE")
+    # downloadfile("0B6h7SF4LjjaUZ1VrYW5tbWd0RlE")
