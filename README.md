@@ -9,3 +9,5 @@ Some python scripts for my daily life.
  - [blogpublisher.py](blogpublisher.py) publish blog to the specific blog site(cnblog/oschina)
 
  - [haixueDownloader.py](haixueDownloader.py) download the haixue vedio
+
+ - [logbuilder.py](logbuilder.py) generate the daily work log by the specific repos
