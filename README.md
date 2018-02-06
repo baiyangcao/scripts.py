@@ -6,4 +6,6 @@ Some python scripts for my daily life.
 
  - [blogformatter.py](blogformatter.py) format the code style of blog, change markdown style to rouge style
 
+ - [blogpublisher.py](blogpublisher.py) publish blog to the specific blog site(cnblog/oschina)
+
  - [haixueDownloader.py](haixueDownloader.py) download the haixue vedio
