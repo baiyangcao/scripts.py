@@ -14,7 +14,8 @@ def get_latest_news():
     # 获取通知公告列表
     soup = BeautifulSoup(response.text, "lxml")
     lis = soup.find_all("ul", attrs={"class": "news"})[0].children
-    news = list(lis)[1].text
+    # 获取最新的三条信息
+    news = list(lis)[1:5]
 
     return news
 
@@ -23,12 +24,13 @@ def get_latest_news():
 def find_latest_ranking():
     while True:
         # 判断最新是否是事业单位信息
-        news = get_latest_news()
-        if news.find("市直事业单位") > -1:
-            # 创建windows toast 通知
-            toaster = ToastNotifier()
-            toaster.show_toast("死期到了", news, duration=20)
-            break
+        news_list = get_latest_news()
+        for news in news_list:
+            if news.find("市直事业单位") > -1:
+                # 创建windows toast 通知
+                toaster = ToastNotifier()
+                toaster.show_toast("死期到了", news, duration=20)
+                break
         time.sleep(60)
 
 
