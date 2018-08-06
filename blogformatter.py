@@ -19,9 +19,9 @@ def formatline(line, type):
         end_regexp = r"^\s*```\s*$"
         end_replace = r"{% endhighlight %}\n"
     elif type.lower() == "markdown":
-        start_regexp = r"{%\s+highlight\s+(.+)\s+%}"
+        start_regexp = r"^{%\s+highlight\s+(.+)\s+%}\s*$"
         start_replace = r"```\1\n"
-        end_regexp = r"{%\s+endhighlight\s+%}"
+        end_regexp = r"^{%\s+endhighlight\s+%}\s*$"
         end_replace = r"```"
 
     if re.fullmatch(start_regexp, line) is not None:
